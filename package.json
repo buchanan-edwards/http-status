@@ -1,0 +1,23 @@
+{
+    "name": "@be/http-status",
+    "version": "1.0.0",
+    "description": "Provides the HttpStatus class and associated factory methods.",
+    "main": "http-status.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/buchanan-edwards/http-status"
+    },
+    "keywords": [
+        "HTTP",
+        "Status"
+    ],
+    "author": "Frank Hellwig",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/buchanan-edwards/http-status/issues"
+    },
+    "homepage": "https://github.com/buchanan-edwards/http-status"
+}
