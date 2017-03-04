@@ -2,7 +2,7 @@
 
 Provides the `HttpStatus` class and associated factory methods.
 
-Version 1.0.0
+Version 1.0.1
 
 ## Usage
 
@@ -18,6 +18,12 @@ let response = HttpStatus.notFound()
 
 console.log(response.toString())
 // 404 (Not Found)
+
+// The status name property is set to true.
+console.log(response.notFound)
+// true
+console.log(response.ok)
+// undefined
 
 // Convert it into an exception.
 throw response.error('Document unavailable')

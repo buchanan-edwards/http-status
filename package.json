@@ -1,6 +1,6 @@
 {
     "name": "@be/http-status",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Provides the HttpStatus class and associated factory methods.",
     "main": "http-status.js",
     "scripts": {
