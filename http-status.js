@@ -106,27 +106,38 @@ function findStatus(code) {
 
 // Given a code, returns the class of that code.
 function responseClass(code) {
-    if (code >= 100 && code <= 199) {
+    if (code === 0) {
+        return 'Connection Error'
+    } else if (code >= 100 && code <= 199) {
         return 'Informational'
     } else if (code >= 200 && code <= 299) {
         return 'Successful'
-    } else if (code >= 300 && code < 400) {
+    } else if (code >= 300 && code <= 399) {
         return 'Redirection'
-    } else if (code >= 400 && code < 500) {
+    } else if (code >= 400 && code <= 499) {
         return 'Client Error'
-    } else if (code >= 500 && code < 600) {
+    } else if (code >= 500 && code <= 599) {
         return 'Server Error'
     } else {
         return 'Unknown Class'
     }
 }
 
-// Used internally by the HttpStatus error method.
+// Represents an HTTP error.
 class HttpError extends Error {
-    constructor(message, code) {
-        super(message)
-        this.code = code
+    constructor(status, message, code) {
+        if (!(status instanceof HttpStatus)) {
+            throw new TypeError(`The status must be an instance of the HttpStatus class.`)
+        }
+        if (!status.isError()) {
+            throw new RangeError(`A status code of ${status.code} does not represent an error.`)
+        }
+        if (message && typeof message !== 'string') {
+            throw new TypeError(`The message must be a string (got ${typeof message} instead).`)
+        }
+        super(`${status} ${message || status.class}`)
         this.name = 'HttpError'
+        this.status = status
     }
 }
 
@@ -145,7 +156,7 @@ class HttpStatus {
         this._code = status.code
         this._text = status.text
         this._name = status.name
-        this._class = responseClass(code)
+        this._class = responseClass(status.code)
         this[status.name] = true
     }
 
@@ -174,20 +185,13 @@ class HttpStatus {
     }
 
     error(message) {
-        if (!this.isError()) {
-            throw new RangeError(`A status code of ${this._code} does not represent an error.`)
-        }
-        if (!message) {
-            message = this._class
-        } else if (message instanceof Error) {
+        if (message instanceof Error) {
             message = message.message
-        } else if (typeof message === 'string') {
+        } else if (message) {
             let args = Array.prototype.slice.call(arguments)
             message = util.format.apply(util, args)
-        } else {
-            throw new TypeError(`Expected an Error or a string for the message (got ${typeof message} instead).`)
         }
-        return new HttpError(`${this.toString()} ${message}`, this._code)
+        return new HttpError(this, message)
     }
 }
 
@@ -201,5 +205,7 @@ statuses.forEach(status => {
         return new HttpStatus(status)
     }
 })
+
+HttpStatus.HttpError = HttpError
 
 module.exports = HttpStatus

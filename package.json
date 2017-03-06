@@ -1,7 +1,7 @@
 {
     "name": "@be/http-status",
-    "version": "1.0.1",
-    "description": "Provides the HttpStatus class and associated factory methods.",
+    "version": "1.0.2",
+    "description": "Provides the `HttpStatus` class for managing HTTP response status codes.",
     "main": "http-status.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
